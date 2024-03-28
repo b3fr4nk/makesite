@@ -34,13 +34,13 @@ func main() {
 	// Create template
 	t := template.Must(template.New("template.tmpl").ParseFiles("template.tmpl"))
 
-	// newFile, err := os.Create(page.HTMLPagePath)
-	// if err != nil {
-	// 	panic(err)
-	// }
+	newFile, err := os.Create(page.HTMLPagePath)
+	if err != nil {
+		panic(err)
+	}
 
 	//generate html
-	err = t.Execute(os.Stdout, page)
+	err = t.Execute(newFile, page)
 	if err != nil {
 		panic(err)
 	}
