@@ -1,8 +1,10 @@
 package main
 
 import (
+	"flag"
 	"html/template"
 	"os"
+	"strings"
 )
 
 type Page struct {
@@ -14,10 +16,11 @@ type Page struct {
 
 func main() {
 	// read input
-	textFilePath := "first-post.txt"
-	textFileName := "new"
+	textFilePathPtr := flag.String("file", "new-post.txt", "path of .txt file in the current directory.")
+	flag.Parse()
+	textFileName := strings.Trim(*textFilePathPtr, ".txt")
 
-	fileContents, err := os.ReadFile(textFilePath)
+	fileContents, err := os.ReadFile(*textFilePathPtr)
 
 	if err!= nil {
 		panic(err)
@@ -25,7 +28,7 @@ func main() {
 
 	//create page struct
 	page := Page{
-		TextFilePath: textFilePath,
+		TextFilePath: *textFilePathPtr,
 		TextFileName: textFileName,
 		HTMLPagePath: textFileName+".html",
 		Content: string(fileContents),
