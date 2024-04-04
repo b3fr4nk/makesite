@@ -16,6 +16,7 @@ type Page struct {
 }
 
 func readDir (path string) ([]string, error) {
+	// read open directory and return all text files
 	files, err := os.ReadDir(path)
 	txtFiles := []string{}
 	if err != nil {
@@ -23,6 +24,16 @@ func readDir (path string) ([]string, error) {
 	}
 
 	for _, file := range(files) {
+		if file.IsDir() {
+			subDirTxtFiles, err := readDir(path+"/"+file.Name())
+			if err != nil {
+				panic(err)
+			}
+			for i := range(subDirTxtFiles) {
+				subDirTxtFiles[i] = file.Name() + "/" + subDirTxtFiles[i]
+			}
+			txtFiles = append(txtFiles, subDirTxtFiles...)
+		}
 		_, path, isCut:= strings.Cut(file.Name(), ".")
 		if isCut {
 			if path == "txt" {
@@ -56,16 +67,31 @@ func createPage(filePath, fileName, Contents string) (error) {
 	if err != nil {
 		return err
 	}
-
-	fmt.Println("done")
-
 	return nil
 } 
 
 func main() {
+	count := 0
+
+	const (
+        Reset  = "\033[0m"
+        Red    = "\033[31m"
+        Green  = "\033[32m"
+        Yellow = "\033[33m"
+        Blue   = "\033[34m"
+        Purple = "\033[35m"
+        Cyan   = "\033[36m"
+        White  = "\033[37m"
+    )
+
+	const (
+        Revert = "\033[0m"
+        Bold  = "\033[1m"
+    )
+
 	// read input
 	textFilePathPtr := flag.String("file", "", "path of .txt file in the current directory.")
-	textFileDirPtr := flag.String("dir", "./", "path to text files for static site generation")
+	textFileDirPtr := flag.String("dir", "~/Dev/makesite/", "path to text files for static site generation")
 	flag.Parse()	
 	
 	if *textFilePathPtr != "" {
@@ -78,7 +104,6 @@ func main() {
 
 		createPage(*textFilePathPtr, textFileName, string(fileContents))
 
-		
 	} else {
 		files, err := readDir(*textFileDirPtr)
 		if err != nil {
@@ -86,19 +111,20 @@ func main() {
 		}
 		
 		for _, file := range(files) {
+
 			path := *textFileDirPtr + "/" + file
 			fileContents, err := os.ReadFile(path)
 			if err != nil {
 				panic(err)
 			}
-			fmt.Println(file + " htmling")
 			err = createPage(path, strings.Trim(path, ".txt"), string(fileContents))
 			if err != nil {
 				panic(err)
 			}
+			count++
 		}
 	}
 
-	
+	fmt.Println(Green + Bold + "Success! " + Revert + White + "Generated", count, "Pages")
 	
 }
