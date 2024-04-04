@@ -53,7 +53,7 @@ If you get stuck on any step, be sure to print the output to `stdout`!
 - [x] Read in the contents of the provided `first-post.txt` file.
 - [x] Edit the provided HTML template (`template.tmpl`) to display the contents of `first-post.txt`.
 - [x] Render the contents of `first-post.txt` using Go Templates and print it to stdout.
-- [ ] Write the HTML template to the filesystem to a file. Name it `first-post.html`.
+- [x] Write the HTML template to the filesystem to a file. Name it `first-post.html`.
 - [x] Manually test the generated HTML page by running `./makesite`. Double-click the `first-post.html` file that appears in your directory after running the command to open the generated page in your browser.
 - [x] **Add, commit, and push to GitHub**.
 - [x] Add a new flag to your command named `file`. This flag represents the name of any `.txt` file in the same directory as your program. Run `./makesite --file=latest-post.txt` to test.
@@ -68,7 +68,7 @@ If you get stuck on any step, be sure to print the output to `stdout`!
 
 #### v1.1 Requirements
 
-- [ ] Create 3 new `.txt` files for testing in the same directory as your project.
+- [x] Create 3 new `.txt` files for testing in the same directory as your project.
 - [ ] Add a new flag to the `makesite` command named `dir`.
 - [ ] Use the flag to find all `.txt` files in the given directory. Print them to `stdout`.
 - [ ] With the list of `.txt` files you found, generate an HTML page for each.
