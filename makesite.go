@@ -90,11 +90,12 @@ func main() {
     )
 
 	// read input
-	textFilePathPtr := flag.String("file", "", "path of .txt file in the current directory.")
-	textFileDirPtr := flag.String("dir", "~/Dev/makesite/", "path to text files for static site generation")
+	textFilePathPtr := flag.String("file", "latest-post.txt", "path of .txt file in the current directory.")
+	textFileDirPtr := flag.String("dir", "", "path to text files for static site generation")
 	flag.Parse()	
-	
-	if *textFilePathPtr != "" {
+	fmt.Println(*textFileDirPtr)
+	if *textFileDirPtr == "" {
+		count ++
 		textFileName := strings.Trim(*textFilePathPtr, ".txt")
 		fileContents, err := os.ReadFile(*textFilePathPtr)
 
