@@ -19,9 +19,7 @@ type Page struct {
 
 func goFigureFirstSentence(text string) (string, error) {
 	sentences := strings.Split(text, "\n")
-	fmt.Println(sentences[0])
 	figure1 := figure.NewFigure(sentences[0], "", true)
-	fmt.Println(figure1.String())
 	sentences[0] = figure1.String()
 
 	return strings.Join(sentences, ". "), nil
@@ -105,7 +103,6 @@ func main() {
 	textFilePathPtr := flag.String("file", "latest-post.txt", "path of .txt file in the current directory.")
 	textFileDirPtr := flag.String("dir", "", "path to text files for static site generation")
 	flag.Parse()	
-	fmt.Println(*textFileDirPtr)
 	if *textFileDirPtr == "" {
 		count ++
 		textFileName := strings.Trim(*textFilePathPtr, ".txt")
@@ -119,7 +116,6 @@ func main() {
 			if err != nil {
 				panic(err)
 			}
-		fmt.Println("formatted")
 		createPage(*textFilePathPtr, textFileName, contents)
 
 
