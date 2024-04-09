@@ -6,6 +6,8 @@ import (
 	"os"
 	"strings"
 	"text/template"
+
+	"github.com/common-nighthawk/go-figure"
 )
 
 type Page struct {
@@ -13,6 +15,16 @@ type Page struct {
 	TextFileName string
 	HTMLPagePath string
 	Content string
+}
+
+func goFigureFirstSentence(text string) (string, error) {
+	sentences := strings.Split(text, "\n")
+	fmt.Println(sentences[0])
+	figure1 := figure.NewFigure(sentences[0], "", true)
+	fmt.Println(figure1.String())
+	sentences[0] = figure1.String()
+
+	return strings.Join(sentences, ". "), nil
 }
 
 func readDir (path string) ([]string, error) {
@@ -103,7 +115,13 @@ func main() {
 			panic(err)
 		}
 
-		createPage(*textFilePathPtr, textFileName, string(fileContents))
+		contents, err :=goFigureFirstSentence(string(fileContents))
+			if err != nil {
+				panic(err)
+			}
+		fmt.Println("formatted")
+		createPage(*textFilePathPtr, textFileName, contents)
+
 
 	} else {
 		files, err := readDir(*textFileDirPtr)
@@ -115,10 +133,15 @@ func main() {
 
 			path := *textFileDirPtr + "/" + file
 			fileContents, err := os.ReadFile(path)
+
 			if err != nil {
 				panic(err)
 			}
-			err = createPage(path, strings.Trim(path, ".txt"), string(fileContents))
+			contents, err :=goFigureFirstSentence(string(fileContents))
+			if err != nil {
+				panic(err)
+			}
+			err = createPage(path, strings.Trim(path, ".txt"), contents)
 			if err != nil {
 				panic(err)
 			}
